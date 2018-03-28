@@ -1,15 +1,15 @@
 package com.jarqprog.controller;
 
-import com.jarqprog.models.OverlapCalc;
-import com.jarqprog.models.OverlapCalcImpl;
-import com.jarqprog.models.RandomIntegerArrayGenerator;
+import com.jarqprog.calculator.OverlapCalc;
+import com.jarqprog.calculator.RectangleOverlapCalc;
+import com.jarqprog.calculator.RectangleCoordinatesGenerator;
+import com.jarqprog.calculator.ShapeCoordinatesGenerator;
 import com.jarqprog.view.View;
 
 public class Root {
 
     private View view;
     private OverlapCalc calc;
-    private RandomIntegerArrayGenerator generator;
 
     public static Root getInstance() {
         return new Root();
@@ -17,25 +17,27 @@ public class Root {
 
     private Root() {
         view = new View();
-        calc = new OverlapCalcImpl();
-        int defaultArrayLen = 4;
-        int defaultMaxValueToGenerate = 400;
-        generator = new RandomIntegerArrayGenerator(defaultArrayLen, defaultMaxValueToGenerate);
+        calc = new RectangleOverlapCalc();
     }
 
     public void runApp() {
-        temporary();
         view.displayMessage(getLineSeparator());
         view.displayMessage("Let's calculate overlap area for randomly generated rectangles.");
         view.displayMessage("Rectangles are made from coordinates:");
         view.displayMessage("[x, y, x', y'] where x,y is bottom left corner");
         view.displayMessage("and x',y' is top right rectangle's corner on the coordinate axis.");
+
+        view.displayMessage("Please specify maximum length of the rectangle's side:");
+        int maxSideLen = view.getNumberWithSpecifiedMinimumAndMaximumValue(5, 500);
+
+        ShapeCoordinatesGenerator generator = new RectangleCoordinatesGenerator(maxSideLen/2);
+
         String userInput = "";
         int[] firstRectangleCoordinates, secondRectangleCoordinates;
         while(! userInput.equals("q")) {
 
-            firstRectangleCoordinates = generator.generateArray();
-            secondRectangleCoordinates = generator.generateArray();
+            firstRectangleCoordinates = generator.generateCoordinates();
+            secondRectangleCoordinates = generator.generateCoordinates();
 
             calc.calculateOverlapArea(firstRectangleCoordinates, secondRectangleCoordinates);
             view.displayMessage(calc.toString());
@@ -43,25 +45,11 @@ public class Root {
 
             userInput = view.getUserInput("To quit press 'q'").toLowerCase();
         }
+        view.displayMessage(getLineSeparator());
         view.displayMessage("it was great fun, wasn't it? ;)");
     }
 
     private String getLineSeparator() {
         return "\n--------";
-    }
-
-//    -1, -1, 10, 10, -1, 0, 3, 9       ,
-
-    private void temporary() {
-        int[] firstRectangle = {-1, -1, 10, 10};
-        int[] secondRectangle = {-1, 0, 3, 9};
-        calc.calculateOverlapArea(firstRectangle, secondRectangle);
-        view.displayMessage(calc.toString());
-
-        int[] tfirstRectangle = {-12, -4, -1, -2};
-        int[] tsecondRectangle = {0, 0, 100, 3000};
-        calc.calculateOverlapArea(tfirstRectangle, tsecondRectangle);
-        view.displayMessage(calc.toString());
-
     }
 }

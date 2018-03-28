@@ -1,4 +1,4 @@
-package com.jarqprog.models;
+package com.jarqprog.calculator;
 
 public interface OverlapCalc {
 

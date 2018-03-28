@@ -1,4 +1,4 @@
-package com.jarqprog.models;
+package com.jarqprog.calculator;
 
 import java.util.Arrays;
 
@@ -23,8 +23,6 @@ public class RectangleOverlapCalc implements OverlapCalc {
     @Override
     public long calculateOverlapArea(int[] firstRectangleCoordinates, int[] secondRectangleCoordinates)
             throws IllegalArgumentException {
-
-        System.out.println("calc - constructor: " + Arrays.toString(firstRectangleCoordinates) + Arrays.toString(secondRectangleCoordinates));
 
         result = 0;
         this.firstRectangleCoordinates = firstRectangleCoordinates;

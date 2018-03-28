@@ -1,4 +1,4 @@
-package com.jarqprog.models;
+package com.jarqprog.calculator;
 
 import java.util.Random;
 
@@ -9,7 +9,7 @@ public class RectangleCoordinatesGenerator implements ShapeCoordinatesGenerator 
 
     public RectangleCoordinatesGenerator(int maxValueToGenerate) throws InstantiationError {
         if(maxValueToGenerate >= 1000) {
-            throw new InstantiationError("Max value of number to add to array is to big (value should be lower than million).");
+            throw new InstantiationError("Max value of number to add to array is to big (value should be lower than thousand).");
         }
         this.maxValueToGenerate = maxValueToGenerate;
         random = new Random();
