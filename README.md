@@ -1,7 +1,8 @@
 to compile and run:
 
 mvn clean package
+java -jar target/OverlapCalculator-1.0-SNAPSHOT.jar 
 
-java -jar target/queststore-szyfratorzy-3.0-SNAPSHOT.jar
+-------
+OverlapCalculator
 
-# queststore_system
