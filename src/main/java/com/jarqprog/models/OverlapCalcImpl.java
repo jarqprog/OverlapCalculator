@@ -17,6 +17,8 @@ public class OverlapCalcImpl implements OverlapCalc {
     @Override
     public long calculateOverlapArea(int[] firstRectangleCoordinates, int[] secondRectangleCoordinates)
             throws IllegalArgumentException {
+
+        System.out.println("calc - constructor: " + Arrays.toString(firstRectangleCoordinates) + Arrays.toString(secondRectangleCoordinates));
         result = 0;
         validateArguments(firstRectangleCoordinates, secondRectangleCoordinates);
         parseArguments(firstRectangleCoordinates, secondRectangleCoordinates);
@@ -27,7 +29,7 @@ public class OverlapCalcImpl implements OverlapCalc {
     }
 
     private void validateArguments(int[] firstRectangleCoordinates, int[] secondRectangleCoordinates)
-            throws IllegalArgumentException {  // should return bool? (throws exception instead)
+            throws IllegalArgumentException {
         if(firstRectangleCoordinates.length != 4 || secondRectangleCoordinates.length != 4) {
             throw new IllegalArgumentException("Coordinates should contain four integer numbers" +
                     " x,y (left bottom corner), x',y' (right top corner), eg. [-4, 3, 20, 22]");
@@ -37,41 +39,35 @@ public class OverlapCalcImpl implements OverlapCalc {
     private void parseArguments(int[] firstRectangleCoordinates, int[] secondRectangleCoordinates) {
 
         int startBottomIndex = 0;
-        int finalBottomIndex = 2;
-        int finalTopIndex = 4;
-        firstRectangleBottomLeft = Arrays.copyOfRange(firstRectangleCoordinates, startBottomIndex, finalBottomIndex);
-        secondRectangleBottomLeft = Arrays.copyOfRange(secondRectangleCoordinates, startBottomIndex, finalBottomIndex);
-        firstRectangleTopRight = Arrays.copyOfRange(firstRectangleCoordinates, finalBottomIndex, finalTopIndex);
-        secondRectangleTopRight = Arrays.copyOfRange(secondRectangleCoordinates, finalBottomIndex, finalTopIndex);
+        int endBottomIndex = 2;
+        int endTopIndex = 4;
+        firstRectangleBottomLeft = Arrays.copyOfRange(firstRectangleCoordinates, startBottomIndex, endBottomIndex);
+        secondRectangleBottomLeft = Arrays.copyOfRange(secondRectangleCoordinates, startBottomIndex, endBottomIndex);
+        firstRectangleTopRight = Arrays.copyOfRange(firstRectangleCoordinates, endBottomIndex, endTopIndex);
+        secondRectangleTopRight = Arrays.copyOfRange(secondRectangleCoordinates, endBottomIndex, endTopIndex);
+
+        System.out.println("sub array: " + Arrays.toString(firstRectangleBottomLeft));
+        System.out.println("sub array: " + Arrays.toString(firstRectangleTopRight));
+        System.out.println("sub array: " + Arrays.toString(secondRectangleTopRight));
     }
 
     private boolean haveRectanglesCommonArea() {
 
-        boolean hasFirstPokemonCorrectParameters =
+        boolean hasFirstRectangleCorrectCoordinates =
                 firstRectangleBottomLeft[xIndex] < firstRectangleTopRight[xIndex] &&
                         firstRectangleBottomLeft[yIndex] < firstRectangleTopRight[yIndex];
-        boolean hasSecondPokemonCorrectParameters =
+        boolean hasSecondRectangleCorrectCoordinates =
                 secondRectangleBottomLeft[xIndex] < secondRectangleTopRight[xIndex] &&
                         secondRectangleBottomLeft[yIndex] < secondRectangleTopRight[yIndex];
-        boolean firstOverlapCondition =
+        boolean whetherFirstOverlapConditionHasBeenMet =
                 secondRectangleBottomLeft[xIndex] < firstRectangleTopRight[xIndex] &&
                         secondRectangleBottomLeft[yIndex] < firstRectangleTopRight[yIndex];
-        boolean secondOverlapCondition =
+        boolean whetherSecondOverlapConditionHasBeenMet =
                 secondRectangleTopRight[xIndex] > firstRectangleBottomLeft[xIndex] &&
                         secondRectangleTopRight[yIndex] > firstRectangleBottomLeft[yIndex];
 
-        return hasFirstPokemonCorrectParameters && hasSecondPokemonCorrectParameters &&
-                firstOverlapCondition && secondOverlapCondition;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("Overlap area for: [%s,%s] [%s,%s] = %s",
-                Arrays.toString(firstRectangleBottomLeft),
-                Arrays.toString(secondRectangleBottomLeft),
-                Arrays.toString(firstRectangleTopRight),
-                Arrays.toString(secondRectangleTopRight),
-                result);
+        return hasFirstRectangleCorrectCoordinates && hasSecondRectangleCorrectCoordinates &&
+                whetherFirstOverlapConditionHasBeenMet && whetherSecondOverlapConditionHasBeenMet;
     }
 
     private long calculateOverlappingArea() {
@@ -98,5 +94,15 @@ public class OverlapCalcImpl implements OverlapCalc {
             return firstNum;
         }
         return secondNum;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Overlap area for rectangle[%s,%s] & rectangle[%s,%s] = %s squares",
+                Arrays.toString(firstRectangleBottomLeft),
+                Arrays.toString(secondRectangleBottomLeft),
+                Arrays.toString(firstRectangleTopRight),
+                Arrays.toString(secondRectangleTopRight),
+                result);
     }
 }

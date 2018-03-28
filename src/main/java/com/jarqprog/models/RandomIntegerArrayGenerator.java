@@ -27,7 +27,7 @@ public class RandomIntegerArrayGenerator {
         for(int i=0; i<arrayLength; i++) {
             array[i] = random.nextInt(maxValue);
         }
-        System.out.println("array:    "  + Arrays.toString(array));
+        System.out.println("array in Generator:    "  + Arrays.toString(array));
         return array;
     }
 

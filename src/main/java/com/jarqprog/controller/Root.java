@@ -33,11 +33,14 @@ public class Root {
         String userInput = "";
         int[] firstRectangleCoordinates, secondRectangleCoordinates;
         while(! userInput.equals("q")) {
+
             firstRectangleCoordinates = generator.generateArray();
             secondRectangleCoordinates = generator.generateArray();
+
             calc.calculateOverlapArea(firstRectangleCoordinates, secondRectangleCoordinates);
             view.displayMessage(calc.toString());
             view.displayMessage(getLineSeparator());
+
             userInput = view.getUserInput("To quit press 'q'").toLowerCase();
         }
         view.displayMessage("it was great fun, wasn't it? ;)");
@@ -47,12 +50,17 @@ public class Root {
         return "\n--------";
     }
 
-//    -1, -1, 10, 10, -1, 0, 3, 9
+//    -1, -1, 10, 10, -1, 0, 3, 9       ,
 
     private void temporary() {
         int[] firstRectangle = {-1, -1, 10, 10};
         int[] secondRectangle = {-1, 0, 3, 9};
         calc.calculateOverlapArea(firstRectangle, secondRectangle);
+        view.displayMessage(calc.toString());
+
+        int[] tfirstRectangle = {-12, -4, -1, -2};
+        int[] tsecondRectangle = {0, 0, 100, 3000};
+        calc.calculateOverlapArea(tfirstRectangle, tsecondRectangle);
         view.displayMessage(calc.toString());
 
     }
