@@ -24,6 +24,7 @@ public class Root {
     }
 
     public void runApp() {
+        temporary();
         view.displayMessage(getLineSeparator());
         view.displayMessage("Let's calculate overlap area for randomly generated rectangles.");
         view.displayMessage("Rectangles are made from coordinates:");
@@ -44,5 +45,15 @@ public class Root {
 
     private String getLineSeparator() {
         return "\n--------";
+    }
+
+//    -1, -1, 10, 10, -1, 0, 3, 9
+
+    private void temporary() {
+        int[] firstRectangle = {-1, -1, 10, 10};
+        int[] secondRectangle = {-1, 0, 3, 9};
+        calc.calculateOverlapArea(firstRectangle, secondRectangle);
+        view.displayMessage(calc.toString());
+
     }
 }
