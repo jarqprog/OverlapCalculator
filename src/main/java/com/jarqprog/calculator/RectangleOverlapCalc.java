@@ -1,5 +1,6 @@
 package com.jarqprog.calculator;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 
 public class RectangleOverlapCalc implements OverlapCalc {
@@ -11,7 +12,8 @@ public class RectangleOverlapCalc implements OverlapCalc {
 
     private int[] firstRectangleCoordinates;
     private int[] secondRectangleCoordinates;
-    private long result;
+
+    private BigInteger result;
 
     /*
     Rectangles are made from coordinates:
@@ -21,25 +23,34 @@ public class RectangleOverlapCalc implements OverlapCalc {
     */
 
     @Override
-    public long calculateOverlapArea(int[] firstRectangleCoordinates, int[] secondRectangleCoordinates)
+    public BigInteger calculateOverlapArea(int[] firstRectangleCoordinates, int[] secondRectangleCoordinates)
             throws IllegalArgumentException {
+        //  I used two int arrays for better readability of the code and (by the way) it forces the use of a int numbers
+        //  I've declared BigInteger as a return type (result) to be able to operate on a huge rectangle
+        //  built using coordinates: {-2147483648, -2147483648, 2147483647, 2147483647}
 
-        result = 0;
+        result = BigInteger.valueOf(0);
         this.firstRectangleCoordinates = firstRectangleCoordinates;
         this.secondRectangleCoordinates = secondRectangleCoordinates;
 
         validateArguments();  // throws IllegalArgumentException
 
         if ( haveRectanglesCommonArea() ) {
-            result = calculateOverlappingArea();
+            result = calculate();
         }
         return result;
     }
 
     private void validateArguments() throws IllegalArgumentException {
-        if(firstRectangleCoordinates.length != 4 || secondRectangleCoordinates.length != 4) {
-            throw new IllegalArgumentException("Coordinates should contain four integer numbers" +
-                    " x,y (left bottom corner), x',y' (right top corner), eg. [-4, 3, 20, 22]");
+        String message = "Coordinates should contain four integer numbers x,y (left bottom corner)," +
+                " x',y' (right top corner), eg. [-4, 3, 20, 22]";
+        if(
+                (firstRectangleCoordinates == null || secondRectangleCoordinates == null) ||
+                (firstRectangleCoordinates.length != 4 || secondRectangleCoordinates.length != 4) ||
+                (Arrays.stream(firstRectangleCoordinates).anyMatch(a -> String.valueOf(a).equals("null"))) ||
+                (Arrays.stream(secondRectangleCoordinates).anyMatch(a -> String.valueOf(a).equals("null")))
+        ) {
+            throw new IllegalArgumentException(message);
         }
     }
 
@@ -62,26 +73,26 @@ public class RectangleOverlapCalc implements OverlapCalc {
                 whetherFirstOverlapConditionHasBeenMet && whetherSecondOverlapConditionHasBeenMet;
     }
 
-    private long calculateOverlappingArea() {
+    private BigInteger calculate() {
 
-        int bottomX, bottomY, topX, topY;
+        long bottomX, bottomY, topX, topY;
 
         bottomX = getBiggerNumber(firstRectangleCoordinates[X_BOTTOM_INDEX], secondRectangleCoordinates[X_BOTTOM_INDEX]);
         bottomY = getBiggerNumber(firstRectangleCoordinates[Y_BOTTOM_INDEX], secondRectangleCoordinates[Y_BOTTOM_INDEX]);
         topX = getSmallerNumber(firstRectangleCoordinates[X_TOP_INDEX], secondRectangleCoordinates[X_TOP_INDEX]);
         topY = getSmallerNumber(firstRectangleCoordinates[Y_TOP_INDEX], secondRectangleCoordinates[Y_TOP_INDEX]);
 
-        return (topX - bottomX) * (topY - bottomY);
+        return BigInteger.valueOf(topX - bottomX).multiply(BigInteger.valueOf(topY - bottomY));
     }
 
-    private int getBiggerNumber(int firstNum, int secondNum) {
+    private long getBiggerNumber(long firstNum, long secondNum) {
         if(firstNum > secondNum) {
             return firstNum;
         }
         return secondNum;
     }
 
-    private int getSmallerNumber(int firstNum, int secondNum) {
+    private long getSmallerNumber(long firstNum, long secondNum) {
         if(firstNum < secondNum) {
             return firstNum;
         }
@@ -90,7 +101,7 @@ public class RectangleOverlapCalc implements OverlapCalc {
 
     @Override
     public String toString() {
-        return String.format("Overlap area for rectangle%s & rectangle%s = %s squares",
+        return String.format("Overlap area for rectangles: %s %s = %s squares",
                 Arrays.toString(firstRectangleCoordinates),
                 Arrays.toString(secondRectangleCoordinates),
                 result);

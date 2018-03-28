@@ -1,6 +1,8 @@
 package com.jarqprog.calculator;
 
+import java.math.BigInteger;
+
 public interface OverlapCalc {
 
-    long calculateOverlapArea(int[] firstRectangleCoordinates, int[] secondRectangleCoordinates);
+    BigInteger calculateOverlapArea(int[] firstRectangleCoordinates, int[] secondRectangleCoordinates);
 }
