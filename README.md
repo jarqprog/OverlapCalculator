@@ -11,4 +11,5 @@ Unit tests implemented for the calculator package
 to compile and run:
 
 mvn clean package
+
 java -jar target/OverlapCalculator-1.0-SNAPSHOT.jar
