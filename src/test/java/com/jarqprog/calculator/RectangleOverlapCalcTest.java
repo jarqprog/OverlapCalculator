@@ -28,10 +28,6 @@ public class RectangleOverlapCalcTest {
     @Test(expected = IllegalArgumentException.class)
     public void testCalculateUsingNullValues() {
 
-        int[] firstRectangleNullCoordinates = new int[4];
-        int[] secondRectangleNullCoordinates = new int[4];
-
-        calc.calculateOverlapArea(firstRectangleNullCoordinates, secondRectangleNullCoordinates);
         calc.calculateOverlapArea(null, null);
     }
 
@@ -70,6 +66,75 @@ public class RectangleOverlapCalcTest {
     }
 
     @Test
-    public void testToString() {
+    public void testToStringWithDefaultFieldsValue() {
+
+        String expected = "Not calculated yet or failed because of incorrect coordinates";
+
+        assertEquals(expected, calc.toString());
+    }
+
+
+    // the tests below require calling the calculation method to change the states of the calc object:
+
+    @Test
+    public void testToStringAfterDoingNormalCalculations() {
+
+        // 1. scenario
+
+        String expected = "Overlap area for rectangles: [-10, -40, 10, 5] [-5, 0, 5, 5] = 50 squares";
+        int[] firstRectangleCoordinates = {-10, -40, 10, 5};
+        int[] secondRectangleCoordinates = {-5, 0, 5, 5};
+
+        calc.calculateOverlapArea(firstRectangleCoordinates, secondRectangleCoordinates);
+
+        assertEquals(expected, calc.toString());
+
+
+        // 2. scenario
+
+        expected = "Overlap area for rectangles: [-101, -40, 10, 50] [-500, 10, 1005, 105] = 4440 squares";
+        int[] firstOtherRectangleCoordinates = {-101, -40, 10, 50};
+        int[] secondOtherRectangleCoordinates = {-500, 10, 1005, 105};
+
+        calc.calculateOverlapArea(firstOtherRectangleCoordinates, secondOtherRectangleCoordinates);
+
+        assertEquals(expected, calc.toString());
+
+
+        // 3. scenario
+
+        expected = "Overlap area for rectangles: [-1, -1, 2, 2] [10, 10, 20, 20] = 0 squares";
+        int[] firstOthersRectangleCoordinates = {-1, -1, 2, 2};
+        int[] secondOthersRectangleCoordinates = {10, 10, 20, 20};
+
+        calc.calculateOverlapArea(firstOthersRectangleCoordinates, secondOthersRectangleCoordinates);
+
+        assertEquals(expected, calc.toString());
+    }
+
+    @Test
+    public void testToStringAfterFailedCalculationCausedByHandledIllegalArgumentException() {
+
+        // 1. scenario - null values
+
+        final String expected = "Not calculated yet or failed because of incorrect coordinates";
+
+        try {
+            calc.calculateOverlapArea(null, null);
+        } catch (IllegalArgumentException notUsed) {}  // swallow
+
+        assertEquals(expected, calc.toString());
+
+
+        // 2. scenario - coordinates with the incorrect number of elements
+
+        int[] incorrectCoordinates = {-1, -1};
+        int[] correctCoordinates = {10, 10, 20, 20};
+
+        try {
+            calc.calculateOverlapArea(incorrectCoordinates, correctCoordinates);
+        } catch (IllegalArgumentException notUsed) {}  // swallow
+
+        assertEquals(expected, calc.toString());
     }
 }
