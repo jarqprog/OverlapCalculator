@@ -32,8 +32,8 @@ public class RectangleCoordinatesGenerator implements ShapeCoordinatesGenerator 
             int num = random.nextInt(maxCoordinateValue);
             boolean isNumInFirstHalfOfArray = i < halfArrayLength;
             if(isNumInFirstHalfOfArray) {
-                boolean isNumberTooBig = num >= array[i + halfArrayLength];
-                if(isNumberTooBig) {
+                boolean isBottomCoordinateHigherThanTop = num >= array[i + halfArrayLength];
+                if(isBottomCoordinateHigherThanTop) {
                     if(num == 0) {
                         num--;
                     } else {

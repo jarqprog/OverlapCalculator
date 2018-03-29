@@ -1,5 +1,7 @@
 package com.jarqprog.calculator;
 
+import com.jarqprog.exceptions.IncorrectCoordinatesException;
+
 import java.math.BigInteger;
 import java.util.Arrays;
 
@@ -30,16 +32,16 @@ public class RectangleOverlapCalc implements OverlapCalc {
 
     @Override
     public BigInteger calculateOverlapArea(int[] firstRectangleCoordinates, int[] secondRectangleCoordinates)
-            throws IllegalArgumentException {
-        //  I used two int arrays for better readability of the code and (by the way) it forces the use of a int numbers
-        //  I've declared BigInteger as a return type (result) to be able to operate on a huge rectangle
-        //  built using coordinates: {-2147483648, -2147483648, 2147483647, 2147483647}
+            throws IncorrectCoordinatesException {
+        // I used two int arrays for better readability of the code and (by the way) it forces the use of a int numbers
+        // I have declared BigInteger as a return type (result) to be able to operate on a large rectangle,
+        // e.g. shape constructed using coordinates: {-2147483648, -2147483648, 2147483647, 2147483647}
 
         result = BigInteger.valueOf(0);
         this.firstRectangleCoordinates = firstRectangleCoordinates;
         this.secondRectangleCoordinates = secondRectangleCoordinates;
 
-        validateArguments();  // throws IllegalArgumentException
+        validateArguments();  // throws IncorrectCoordinatesException
 
         if ( haveRectanglesCommonArea() ) {
             result = calculate();
@@ -47,16 +49,14 @@ public class RectangleOverlapCalc implements OverlapCalc {
         return result;
     }
 
-    private void validateArguments() throws IllegalArgumentException {
+    private void validateArguments() throws IncorrectCoordinatesException {
         String message = "Coordinates should contain four integer numbers x,y (left bottom corner)," +
                 " x',y' (right top corner), eg. [-4, 3, 20, 22]";
         if(
                 (firstRectangleCoordinates == null || secondRectangleCoordinates == null) ||
-                (firstRectangleCoordinates.length != 4 || secondRectangleCoordinates.length != 4) ||
-                (Arrays.stream(firstRectangleCoordinates).anyMatch(a -> String.valueOf(a).equals("null"))) ||
-                (Arrays.stream(secondRectangleCoordinates).anyMatch(a -> String.valueOf(a).equals("null")))
+                (firstRectangleCoordinates.length != 4 || secondRectangleCoordinates.length != 4)
         ) {
-            throw new IllegalArgumentException(message);
+            throw new IncorrectCoordinatesException(message);
         }
     }
 
@@ -109,7 +109,7 @@ public class RectangleOverlapCalc implements OverlapCalc {
     public String toString() {
         try {
             validateArguments();
-        } catch (IllegalArgumentException notUsed) {
+        } catch (IncorrectCoordinatesException notUsed) {
             return "Not calculated yet or failed because of incorrect coordinates";
         }
         return String.format("Overlap area for rectangles: %s %s = %s squares",
