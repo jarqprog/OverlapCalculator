@@ -1,5 +1,6 @@
 package com.jarqprog.calculator;
 
+import com.jarqprog.exceptions.IncorrectCoordinatesException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,8 +17,9 @@ public class RectangleOverlapCalcTest {
         calc = new RectangleOverlapCalc();
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testCalculateUsingArgumentsThatMakeItImpossibleToBuildRectangles() {
+    @Test(expected = IncorrectCoordinatesException.class)
+    public void testCalculateUsingArgumentsThatMakeItImpossibleToBuildRectangles()
+            throws IncorrectCoordinatesException {
 
         int[] firstIncorrectRectangleCoordinates = {1, 10, 0};
         int[] secondRectangleCoordinates = {1, 10, 20, 100};
@@ -25,14 +27,14 @@ public class RectangleOverlapCalcTest {
         calc.calculateOverlapArea(firstIncorrectRectangleCoordinates, secondRectangleCoordinates);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testCalculateUsingNullValues() {
+    @Test(expected = IncorrectCoordinatesException.class)
+    public void testCalculateUsingNullValues() throws IncorrectCoordinatesException {
 
         calc.calculateOverlapArea(null, null);
     }
 
     @Test
-    public void testCalculateUsingRegularParameters() {
+    public void testCalculateUsingRegularParameters() throws IncorrectCoordinatesException {
 
         int[] firstRectangleCoordinates = {-1, -1, 10, 10};
         int[] secondRectangleCoordinates = {-1, 0, 3, 9};
@@ -52,7 +54,7 @@ public class RectangleOverlapCalcTest {
     }
 
     @Test
-    public void testCalculateUsingHugeNumbers() {
+    public void testCalculateUsingHugeNumbers() throws IncorrectCoordinatesException {
 
         int[] absurdlyHugeRectangleCoordinates = {-2147483648, -2147483648, 2147483647, 2147483647};
 
@@ -77,7 +79,7 @@ public class RectangleOverlapCalcTest {
     // the tests below require calling the calculation method to change the states of the calc object:
 
     @Test
-    public void testToStringAfterDoingNormalCalculations() {
+    public void testToStringAfterDoingNormalCalculations() throws IncorrectCoordinatesException {
 
         // 1. scenario
 
@@ -121,7 +123,7 @@ public class RectangleOverlapCalcTest {
 
         try {
             calc.calculateOverlapArea(null, null);
-        } catch (IllegalArgumentException notUsed) {}  // swallow
+        } catch (IncorrectCoordinatesException notUsed) {}  // swallow
 
         assertEquals(expected, calc.toString());
 
@@ -133,7 +135,7 @@ public class RectangleOverlapCalcTest {
 
         try {
             calc.calculateOverlapArea(incorrectCoordinates, correctCoordinates);
-        } catch (IllegalArgumentException notUsed) {}  // swallow
+        } catch (IncorrectCoordinatesException notUsed) {}  // swallow
 
         assertEquals(expected, calc.toString());
     }
