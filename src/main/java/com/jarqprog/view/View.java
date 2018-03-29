@@ -9,6 +9,10 @@ public class View {
         System.out.println(msg);
     }
 
+    public void displaySeparatingLine() {
+        System.out.println("\n------------------");
+    }
+
     public String getUserInput(String msg) {
         Scanner scanner = new Scanner(System.in);
         displayMessage(msg);
