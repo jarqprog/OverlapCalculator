@@ -22,6 +22,12 @@ public class RectangleOverlapCalc implements OverlapCalc {
     on the coordinate axis.
     */
 
+    public RectangleOverlapCalc() {
+        firstRectangleCoordinates = new int[0];
+        secondRectangleCoordinates = new int[0];
+        result = BigInteger.valueOf(0);
+    }
+
     @Override
     public BigInteger calculateOverlapArea(int[] firstRectangleCoordinates, int[] secondRectangleCoordinates)
             throws IllegalArgumentException {
@@ -101,6 +107,11 @@ public class RectangleOverlapCalc implements OverlapCalc {
 
     @Override
     public String toString() {
+        try {
+            validateArguments();
+        } catch (IllegalArgumentException notUsed) {
+            return "Not calculated yet or failed because of incorrect coordinates";
+        }
         return String.format("Overlap area for rectangles: %s %s = %s squares",
                 Arrays.toString(firstRectangleCoordinates),
                 Arrays.toString(secondRectangleCoordinates),
