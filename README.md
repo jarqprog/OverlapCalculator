@@ -4,7 +4,9 @@ OverlapCalculator - calculate overlap area of two rectangles.
     [x, y, x', y'] where x,y define bottom corner
     and x',y' define top rectangle's corner
     on the coordinate axis.
-    
+
+Unit tests implemented for the calculator package
+
 -------
 to compile and run:
 
